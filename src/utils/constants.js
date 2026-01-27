@@ -1,7 +1,7 @@
 // Color Palette
 export const COLORS = {
   primary: '#667eea',
-  secondary: '#764ba2',
+  secondary: '#022031',
   accent: '#f39c12',
   dark: '#1a1f3a',
   light: '#f8f9fa',

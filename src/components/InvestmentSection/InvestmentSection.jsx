@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { FaChartLine } from 'react-icons/fa';
+import { FaClock } from 'react-icons/fa';
+import { FaBolt } from 'react-icons/fa';
 import { COLORS } from '../../utils/constants';
 import Container from '../common/Container';
 import Button from '../common/Button';
@@ -244,7 +247,7 @@ const InvestmentSection = () => {
             animate={isInView ? 'visible' : 'hidden'}
             variants={benefitVariants}
           >
-            <h4>📊 ROI Comprovado</h4>
+            <h4><FaChartLine /> ROI Comprovado</h4>
             <p>Profissionais relatam aumento de 40% na retenção de pacientes após o workshop</p>
           </BenefitCard>
 
@@ -254,7 +257,7 @@ const InvestmentSection = () => {
             animate={isInView ? 'visible' : 'hidden'}
             variants={benefitVariants}
           >
-            <h4>💼 2 Horas que Transformam</h4>
+            <h4><FaClock /> 3 Horas que Transformam</h4>
             <p>Economiza meses de estudo confuso com conteúdo desorganizado</p>
           </BenefitCard>
 
@@ -264,7 +267,7 @@ const InvestmentSection = () => {
             animate={isInView ? 'visible' : 'hidden'}
             variants={benefitVariants}
           >
-            <h4>⚡ Impacto Imediato</h4>
+            <h4><FaBolt /> Impacto Imediato</h4>
             <p>Aplique o conhecimento na primeira consulta da semana</p>
           </BenefitCard>
         </BenefitsWrapper>

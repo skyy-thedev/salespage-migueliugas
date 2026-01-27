@@ -15,7 +15,7 @@ export const TitleMain = styled.h2`
   color: ${COLORS.dark};
   margin-bottom: 16px;
   font-weight: 900;
-  background: linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.secondary} 100%);
+  background: linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primary} 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

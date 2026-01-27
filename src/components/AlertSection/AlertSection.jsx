@@ -50,7 +50,7 @@ const ProblemCard = styled(motion.div)`
 `;
 
 const SolutionCard = styled(motion.div)`
-  background: linear-gradient(250deg, #764ba2 0%, #667eeaff 100%);
+  background: linear-gradient(290deg, #022031 0%, #667eeaff 100%);
   border: 2px solid ${COLORS.primary};
   border-radius: 16px;
   padding: 3vh 50px;
@@ -108,7 +108,7 @@ const CardList = styled.ul`
 `;
 
 const AlertTitle = styled.h3`
-  color: ${COLORS.primary};
+  color: ${COLORS.secundary};
   font-size: 3rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -123,15 +123,16 @@ const AlertTitle = styled.h3`
 `;
 
 const AlertSubtitle = styled.p`
-  color: ${COLORS.primary};
+  color: ${COLORS.secundary};
   font-size: 2.4rem;
   max-width: 25dvw;
   margin: 0 auto;
   font-weight: 600;
   text-align: center;
   grid-column: 1 / -1;
+  font-family: 'Poppins', sans-serif;
   font-style: italic;
-  line-height: 1.6;
+  line-height: 1;
   
   @media (max-width: 768px) {
     font-size: 1.6rem;
