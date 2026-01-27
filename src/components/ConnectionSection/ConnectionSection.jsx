@@ -1,3 +1,4 @@
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { COLORS } from '../../utils/constants';
@@ -6,6 +7,7 @@ import SectionTitle from '../common/SectionTitle';
 import Highlight from '../common/Highlight';
 import { useInView } from '../../hooks';
 import { WORKSHOP_INFO } from '../../utils/constants';
+import NeuralConnections from './NeuralConnections';
 
 const ConnectionSectionWrapper = styled.section`
   position: relative;
@@ -56,6 +58,13 @@ const SystemCard = styled(motion.div)`
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  z-index: 1;
+
+  ${props => props.$active && `
+    border: 3px solid ${COLORS.secondary};
+    box-shadow: 0 0 30px ${COLORS.secondary}60, 0 0 50px ${COLORS.primary}40;
+    transform: scale(1.02);
+  `}
 
   &::before {
     content: '';
@@ -148,7 +157,8 @@ const IntestineCircle = styled(motion.div)`
 const CenterTitle = styled.h3`
   color: ${COLORS.primary};
   font-size: 1.4rem;
-  margin-top: 7vh;
+  margin-top: 0vh;
+  margin-bottom: 5vh;
   font-weight: 700;
   text-align: center;
 
@@ -173,6 +183,42 @@ const ConnectionText = styled.p`
 
 const ConnectionSection = () => {
   const [ref, isInView] = useInView({ threshold: 0.2 });
+  const [activeIntestine, setActiveIntestine] = useState(false);
+  const [intestinePos, setIntestinePos] = useState(null);
+  const [systemPositions, setSystemPositions] = useState([]);
+  const intestineCircleRef = useRef(null);
+  const systemCardsRef = useRef([]);
+
+  const handleIntestineHover = () => {
+    // Pegar posição do intestino
+    if (intestineCircleRef.current) {
+      const intestineRect = intestineCircleRef.current.getBoundingClientRect();
+      setIntestinePos({
+        x: intestineRect.left + intestineRect.width / 2,
+        y: intestineRect.top + intestineRect.height / 2,
+      });
+    }
+
+    // Pegar posições de todos os cards
+    const positions = systemCardsRef.current
+      .filter(el => el !== null)
+      .map(el => {
+        const rect = el.getBoundingClientRect();
+        return {
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2,
+        };
+      });
+
+    setSystemPositions(positions);
+    setActiveIntestine(true);
+  };
+
+  const handleIntestineLeave = () => {
+    setActiveIntestine(false);
+    setIntestinePos(null);
+    setSystemPositions([]);
+  };
 
   const intestineVariants = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -203,23 +249,32 @@ const ConnectionSection = () => {
           O INTESTINO NÃO É UM ALVO. <br/> É UM PONTO DE ENCONTRO.
         </SectionTitle>
 
+          <CenterTitle>O intestino conversa o tempo todo com:</CenterTitle>
+
         <IntestineCenter
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={intestineVariants}
         >
-          <IntestineCircle>🌿</IntestineCircle>
-          <CenterTitle>O intestino conversa o tempo todo com:</CenterTitle>
+          <IntestineCircle
+            ref={intestineCircleRef}
+            onMouseEnter={handleIntestineHover}
+            onMouseLeave={handleIntestineLeave}
+            style={{ cursor: 'pointer' }}
+          >
+          </IntestineCircle>
         </IntestineCenter>
 
         <SystemsGrid>
           {WORKSHOP_INFO.systems.map((system, index) => (
             <SystemCard
               key={system.name}
+              ref={(el) => (systemCardsRef.current[index] = el)}
               custom={index}
               initial="hidden"
               animate={isInView ? 'visible' : 'hidden'}
               variants={systemCardVariants}
+              $active={activeIntestine}
             >
               <SystemEmoji>{system.emoji}</SystemEmoji>
               <SystemName>{system.name}</SystemName>
@@ -231,6 +286,8 @@ const ConnectionSection = () => {
           Quando essa <Highlight>comunicação falha</Highlight>, surgem sintomas que parecem desconectados, mas não são.
         </ConnectionText>
       </Content>
+
+      <NeuralConnections activeIntestine={activeIntestine} intestinePos={intestinePos} systemPositions={systemPositions} />
     </ConnectionSectionWrapper>
   );
 };

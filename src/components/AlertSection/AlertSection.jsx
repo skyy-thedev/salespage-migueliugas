@@ -1,9 +1,9 @@
+import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { COLORS } from '../../utils/constants';
 import Container from '../common/Container';
 import { useInView } from '../../hooks';
-import Highlight from '../common/Highlight';
 
 const AlertSectionWrapper = styled.section`
   position: relative;
@@ -20,7 +20,7 @@ const AlertSectionWrapper = styled.section`
 `;
 
 const AlertCardContainer = styled(Container)`
-  max-width: 72dvw;
+  max-width: 75dvw;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 70px;
@@ -38,7 +38,7 @@ const AlertCardContainer = styled(Container)`
 
 const ProblemCard = styled(motion.div)`
   background: linear-gradient(135deg, rgba(64, 64, 64, 0.1) 0%, rgba(46, 46, 46, 0.05) 100%);
-  border: 2px solid ${COLORS.gray};
+  border: 2px solid ${COLORS.gray200};
   border-radius: 16px;
   padding: 3vh 50px;
   position: relative;
@@ -57,17 +57,6 @@ const SolutionCard = styled(motion.div)`
   position: relative;
   overflow: hidden;
   transform: translateY(20px);
-
-  &::before {
-    content: '✓';
-    position: absolute;
-    top: 30px;
-    right: 40px;
-    font-size: 2.5rem;
-    opacity: 0.25;
-    color: ${COLORS.white};
-    font-weight: bold;
-  }
 
   @media (max-width: 768px) {
     padding: 3vh 35px;
@@ -121,7 +110,6 @@ const CardList = styled.ul`
 const AlertTitle = styled.h3`
   color: ${COLORS.primary};
   font-size: 3rem;
-  margin-bottom: 10px;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 1.5px;
@@ -136,13 +124,20 @@ const AlertTitle = styled.h3`
 
 const AlertSubtitle = styled.p`
   color: ${COLORS.primary};
-  font-size: 1.8rem;
-  margin-bottom: 0px;
-  font-weight: 500;
+  font-size: 2.4rem;
+  max-width: 25dvw;
+  margin: 0 auto;
+  font-weight: 600;
   text-align: center;
   grid-column: 1 / -1;
   font-style: italic;
   line-height: 1.6;
+  
+  @media (max-width: 768px) {
+    font-size: 1.6rem;
+    margin-bottom: 35px;
+      max-width: 60dvw;
+  }
 `;
 
 const TransitionArrow = styled(motion.div)`
@@ -216,11 +211,11 @@ const AlertSection = () => {
         >
           <CardHeader $error>ANTES:</CardHeader>
           <CardList $error>
-            <li>Pula direto para protocolos sem estrutura</li>
-            <li>Escolhe suplementos pelo achismo</li>
-            <li>Trata microbiota, inflamação e cérebro separadamente</li>
-            <li>Medo de errar na orientação</li>
-            <li>Falta raciocínio sistêmico na prática</li>
+            <li>Pula direto para <strong>protocolos sem estrutura</strong></li>
+            <li>Escolhe suplementos pelo <strong>achismo</strong></li>
+            <li>Trata microbiota, inflamação e cérebro <strong>separadamente</strong></li>
+            <li><strong>Medo</strong> de errar na orientação</li>
+            <li><strong>Falta raciocínio sistêmico</strong> na prática</li>
           </CardList>
         </ProblemCard>
 
@@ -231,13 +226,14 @@ const AlertSection = () => {
         >
           <CardHeader>DEPOIS:</CardHeader>
           <CardList>
-            <li>Estrutura clara de <Highlight>raciocínio sistêmico</Highlight></li>
-            <li>Diagnostica <Highlight>antes de receitar</Highlight></li>
-            <li>Conecta <Highlight>todos os sistemas</Highlight> naturalmente</li>
-            <li><Highlight>Confiança total</Highlight> na orientação</li>
-            <li>Aplicação clínica <Highlight>sem confusão</Highlight></li>
+            <li>Estrutura clara de <strong>raciocínio sistêmico</strong></li>
+            <li>Diagnostica <strong>antes de receitar</strong></li>
+            <li>Conecta <strong>todos os sistemas</strong> naturalmente</li>
+            <li><strong>Confiança total</strong> na orientação</li>
+            <li>Aplicação clínica <strong>sem confusão</strong></li>
           </CardList>
         </SolutionCard>
+
       </AlertCardContainer>
     </AlertSectionWrapper>
   );

@@ -1,11 +1,10 @@
+import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { COLORS } from '../../utils/constants';
-import { useParallax } from '../../hooks';
 import { WORKSHOP_INFO } from '../../utils/constants';
 import Button from '../common/Button';
 import Highlight from '../common/Highlight';
-import Particles from './Particles';
 import Container from '../common/Container';
 
 const HeroSection = styled.section`
@@ -17,47 +16,23 @@ const HeroSection = styled.section`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(135deg, ${COLORS.dark} 0%, #2d3561 100%);
-`;
+  background: url('/gut-microbiome-hero.jpg') center/cover no-repeat;
+  background-attachment: fixed;
 
-const BackgroundOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
-  pointer-events: none;
-`;
-
-const IntestineBackground = styled.div`
-  position: absolute;
-  top: 50%;
-  right: -10%;
-  width: 600px;
-  height: 600px;
-  transform: translateY(-50%);
-  opacity: 0.2;
-  pointer-events: none;
-  background: url('/intestine-3d.png') no-repeat center;
-  background-size: contain;
-  z-index: 1;
-
-  @media (max-width: 1024px) {
-    width: 400px;
-    height: 400px;
-    right: -5%;
-  }
-
-  @media (max-width: 768px) {
-    width: 300px;
-    height: 300px;
-    right: -15%;
-    opacity: 0.1;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.7) 100%, rgba(45, 53, 97, 0.7) 100%);
+    pointer-events: none;
+    z-index: 1;
   }
 `;
+
+
 
 const HeroContent = styled(Container)`
   position: relative;
@@ -188,8 +163,6 @@ const ScrollIndicator = styled(motion.div)`
 `;
 
 const Hero = () => {
-  const offset = useParallax();
-
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -242,10 +215,6 @@ const Hero = () => {
 
   return (
     <HeroSection>
-      <Particles count={20} />
-      <BackgroundOverlay style={{ transform: `translateY(${offset * 0.5}px)` }} />
-      <IntestineBackground style={{ transform: `translateY(${offset * 0.3}px)` }} />
-      
       <HeroContent>
         <DateBadge
           initial="hidden"
@@ -277,16 +246,12 @@ const Hero = () => {
           variants={proofVariants}
         >
           <ProofItem>
-            <div className="number">200+</div>
+            <div className="number">40+</div>
             <div className="label">Profissionais Inscritos</div>
           </ProofItem>
           <ProofItem>
-            <div className="number">45</div>
+            <div className="number">60</div>
             <div className="label">Vagas Disponíveis</div>
-          </ProofItem>
-          <ProofItem>
-            <div className="number">4.9⭐</div>
-            <div className="label">Avaliação Média</div>
           </ProofItem>
         </SocialProofWrapper>
 
@@ -304,13 +269,6 @@ const Hero = () => {
             }}
           >
             GARANTIR MINHA VAGA
-          </Button>
-          <Button 
-            variant="outline" 
-            size="large"
-            rounded
-          >
-            Saber mais →
           </Button>
         </ButtonContainer>
       </HeroContent>

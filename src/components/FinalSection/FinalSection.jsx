@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { COLORS } from '../../utils/constants';
@@ -74,8 +75,12 @@ const QuoteText = styled.p`
   font-size: 1.15rem;
   line-height: 1.9;
   font-style: italic;
-  width: 23vw;
+  max-width: 25vw;
   margin: 0 auto;
+  
+  @media (max-width: 768px) {
+    max-width: 60vw
+  }
 `;
 
 const FinalCTA = styled(motion.div)`

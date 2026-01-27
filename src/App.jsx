@@ -1,3 +1,4 @@
+import React from 'react';
 import { Hero } from './components/Hero';
 import { AlertSection } from './components/AlertSection';
 import { ConnectionSection } from './components/ConnectionSection';
