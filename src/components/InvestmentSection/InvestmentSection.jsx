@@ -109,7 +109,7 @@ const Description = styled.p`
 
 const BenefitsWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 30px;
   margin-bottom: 60px;
   max-width: 1200px;
@@ -241,16 +241,6 @@ const InvestmentSection = () => {
         </Description>
 
         <BenefitsWrapper>
-          <BenefitCard
-            custom={0}
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            variants={benefitVariants}
-          >
-            <h4><FaChartLine /> ROI Comprovado</h4>
-            <p>Profissionais relatam aumento de 40% na retenção de pacientes após o workshop</p>
-          </BenefitCard>
-
           <BenefitCard
             custom={1}
             initial="hidden"

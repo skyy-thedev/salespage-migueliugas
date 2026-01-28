@@ -10,7 +10,7 @@ import { WORKSHOP_INFO } from '../../utils/constants';
 
 const InstructorsSectionWrapper = styled.section`
   position: relative;
-  padding: 100px 20px;
+  padding: 50px 20px;
   background: ${COLORS.light};
 
   @media (max-width: 768px) {
@@ -52,27 +52,16 @@ const CardHeader = styled.div`
   position: relative;
 `;
 
-const Avatar = styled.div`
-  width: 100px;
-  height: 100px;
+const Avatar = styled.img`
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
-  background: ${COLORS.white};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
+  object-fit: cover;
   margin-bottom: 15px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 1;
-`;
-
-const DecorativeLine = styled.div`
-  width: 60px;
-  height: 3px;
-  background: ${COLORS.white};
-  border-radius: 2px;
-  margin: 15px 0;
+  border: 3px solid ${COLORS.white};
 `;
 
 const InstructorName = styled.h3`
@@ -93,48 +82,7 @@ const CardBody = styled.div`
   padding: 30px;
 `;
 
-const CredibilityGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-bottom: 25px;
-  padding-bottom: 25px;
-  border-bottom: 1px solid ${COLORS.gray200};
 
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-`;
-
-const CredibilityItem = styled.div`
-  text-align: center;
-
-  .value {
-    font-size: 1.2rem;
-    font-weight: 900;
-    color: ${COLORS.primary};
-    line-height: 1;
-  }
-
-  .label {
-    font-size: 0.75rem;
-    color: ${COLORS.textLight};
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-top: 5px;
-  }
-
-  @media (max-width: 768px) {
-    .value {
-      font-size: 1rem;
-    }
-    .label {
-      font-size: 0.7rem;
-    }
-  }
-`;
 
 const Biography = styled.p`
   color: ${COLORS.text};
@@ -210,26 +158,11 @@ const InstructorsSection = () => {
               variants={cardVariants}
             >
               <CardHeader>
-                <Avatar>{instructor.emoji}</Avatar>
-                <DecorativeLine />
+                <Avatar src={instructor.image} alt={instructor.name} />
                 <InstructorName>{instructor.name}</InstructorName>
                 <InstructorTitle>{instructor.profession}</InstructorTitle>
               </CardHeader>
               <CardBody>
-                <CredibilityGrid>
-                  <CredibilityItem>
-                    <div className="value">{instructor.certifications}</div>
-                    <div className="label">Certificações</div>
-                  </CredibilityItem>
-                  <CredibilityItem>
-                    <div className="value">{instructor.patients}</div>
-                    <div className="label">Pacientes</div>
-                  </CredibilityItem>
-                  <CredibilityItem>
-                    <div className="value">{instructor.successRate}%</div>
-                    <div className="label">Taxa Sucesso</div>
-                  </CredibilityItem>
-                </CredibilityGrid>
                 <Biography>{instructor.bio}</Biography>
                 <SocialLink href={`https://instagram.com/${instructor.instagram.slice(1)}`} target="_blank" rel="noopener noreferrer">
                   {instructor.instagram} ↗

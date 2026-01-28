@@ -63,7 +63,7 @@ export const ANIMATION_VARIANTS = {
 // Workshop Info
 export const WORKSHOP_INFO = {
   title: 'INTESTINOS, MÚLTIPLOS SISTEMAS E UMA ÚNICA CONEXÃO',
-  date: '31 DE JANEIRO DE 2026',
+  date: '03 DE FEVEREIRO DE 2026',
   investment: 'R$ 100',
   duration: '3 horas',
   format: '1 encontro ao vivo',
@@ -74,20 +74,14 @@ export const WORKSHOP_INFO = {
       profession: 'Nutricionista',
       bio: 'Com atuação em saúde integrativa, microbiota, inflamação e comportamento alimentar. Conhecida por unir ciência, clínica e visão sistêmica sem atalhos e sem modismos.',
       instagram: '@sofinutrir',
-      emoji: '👩‍⚕️',
-      certifications: 3,
-      patients: '5K+',
-      successRate: 92,
+      image: '/sofia.png',
     },
     {
       name: 'Miguel Iugas',
       profession: 'Farmacêutico Clínico',
       bio: 'Com forte base analítica e leitura aprofundada de exames. Reconhecido pelo pensamento lógico, crítico e pela capacidade de conectar dados com fisiologia real.',
       instagram: '@migueliugas',
-      emoji: '👨‍⚕️',
-      certifications: 4,
-      patients: '8K+',
-      successRate: 94,
+      image: '/miguel.jpg',
     },
   ],
   systems: [

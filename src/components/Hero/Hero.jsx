@@ -148,10 +148,15 @@ const ProofItem = styled.div`
 const ScrollIndicator = styled(motion.div)`
   position: absolute;
   bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 30px;
   z-index: 10;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   svg {
     width: 30px;
@@ -216,14 +221,6 @@ const Hero = () => {
   return (
     <HeroSection>
       <HeroContent>
-        <DateBadge
-          initial="hidden"
-          animate="visible"
-          variants={subtitleVariants}
-        >
-          {WORKSHOP_INFO.date}
-        </DateBadge>
-
         <HeroTitle
           initial="hidden"
           animate="visible"
