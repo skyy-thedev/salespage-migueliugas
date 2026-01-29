@@ -63,7 +63,7 @@ export const ANIMATION_VARIANTS = {
 // Workshop Info
 export const WORKSHOP_INFO = {
   title: 'INTESTINOS, MÚLTIPLOS SISTEMAS E UMA ÚNICA CONEXÃO',
-  date: '03 DE FEVEREIRO DE 2026',
+  date: '04 DE MARÇO DE 2026',
   investment: 'R$ 150',
   duration: '3 horas',
   format: '1 encontro ao vivo',

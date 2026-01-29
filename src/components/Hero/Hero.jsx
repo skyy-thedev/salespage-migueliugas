@@ -221,6 +221,15 @@ const Hero = () => {
   return (
     <HeroSection>
       <HeroContent>
+
+        <DateBadge
+          initial="hidden"
+          animate="visible"
+          variants={subtitleVariants}
+        >
+          {WORKSHOP_INFO.date}
+        </DateBadge>
+
         <HeroTitle
           initial="hidden"
           animate="visible"
