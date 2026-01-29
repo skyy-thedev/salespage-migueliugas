@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigate } from 'react-router-dom';
 import { COLORS } from '../../utils/constants';
 import Container from '../common/Container';
 import Button from '../common/Button';
 import { useInView } from '../../hooks';
+
+// Hotmart Widget Integration
+const HOTMART_CHECKOUT_URL = 'https://pay.hotmart.com/O104135207P?off=589e9hof';
 
 // Validação com Yup
 const validationSchema = yup.object({
@@ -159,6 +163,88 @@ const LeadForm = () => {
   const [ref, isInView] = useInView({ threshold: 0.3 });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // Load Hotmart widget script and setup event listeners
+  useEffect(() => {
+    const loadHotmartWidget = () => {
+      // Load Hotmart JS
+      if (!document.querySelector('script[src*="hotmart.com/checkout/widget"]')) {
+        const script = document.createElement('script');
+        script.src = 'https://static.hotmart.com/checkout/widget.min.js';
+        script.type = 'text/javascript';
+        document.head.appendChild(script);
+      }
+      
+      // Load Hotmart CSS
+      if (!document.querySelector('link[href*="hotmart-fb.min.css"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://static.hotmart.com/css/hotmart-fb.min.css';
+        document.head.appendChild(link);
+      }
+    };
+    
+    loadHotmartWidget();
+
+    // Listen for Hotmart checkout events via postMessage
+    const handleHotmartMessage = (event) => {
+      // Verify origin is from Hotmart
+      if (event.origin && event.origin.includes('hotmart.com')) {
+        const data = event.data;
+        
+        // Check for successful purchase events
+        if (data && (
+          data.event === 'purchase_complete' ||
+          data.event === 'purchase.complete' ||
+          data.event === 'PURCHASE_COMPLETE' ||
+          data.type === 'purchase_complete' ||
+          data.status === 'approved' ||
+          data.status === 'complete' ||
+          (typeof data === 'string' && data.includes('purchase'))
+        )) {
+          console.log('Hotmart purchase completed:', data);
+          // Redirect to thank you page
+          navigate('/obrigado');
+        }
+      }
+    };
+
+    // Listen for messages from Hotmart iframe
+    window.addEventListener('message', handleHotmartMessage);
+
+    // Also check for URL changes that might indicate checkout completion
+    const checkForCheckoutClose = () => {
+      // When Hotmart widget closes after purchase, redirect
+      const overlay = document.querySelector('.hotmart-fb-overlay');
+      if (overlay) {
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+              const display = window.getComputedStyle(overlay).display;
+              // If overlay was visible and now hidden, check if we should redirect
+              if (display === 'none') {
+                const purchaseComplete = localStorage.getItem('hotmartPurchaseComplete');
+                if (purchaseComplete === 'true') {
+                  localStorage.removeItem('hotmartPurchaseComplete');
+                  navigate('/obrigado');
+                }
+              }
+            }
+          });
+        });
+        observer.observe(overlay, { attributes: true });
+      }
+    };
+
+    // Delay observer setup to allow Hotmart to create elements
+    setTimeout(checkForCheckoutClose, 2000);
+
+    return () => {
+      window.removeEventListener('message', handleHotmartMessage);
+    };
+  }, [navigate]);
 
   const {
     register,
@@ -173,29 +259,51 @@ const LeadForm = () => {
 
   const formData = watch();
 
+  const openHotmartCheckout = (data) => {
+    // Build Hotmart URL with pre-filled data
+    const params = new URLSearchParams({
+      checkoutMode: '2', // Widget mode
+      name: data.fullName,
+      email: data.email,
+      phonenumber: data.whatsapp.replace(/\D/g, ''), // Remove non-digits
+    });
+    
+    // Use & since HOTMART_CHECKOUT_URL already has query params
+    const checkoutUrl = `${HOTMART_CHECKOUT_URL}&${params.toString()}`;
+    
+    // Open Hotmart widget
+    if (window.hotmart_fb) {
+      window.hotmart_fb.checkout(checkoutUrl);
+    } else {
+      // Fallback: open in new window
+      window.open(checkoutUrl, '_blank');
+    }
+  };
+
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      // Simular envio de dados
-      await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Dados do formulário:', data);
       
-      // Aqui você integraria com um serviço real (RD Station, Mailchimp, etc)
-      // const response = await fetch('/api/leads', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(data),
-      // });
-
-      setIsSubmitted(true);
-      reset();
+      // Store lead data in localStorage for thank you page
+      localStorage.setItem('leadData', JSON.stringify({
+        name: data.fullName,
+        email: data.email,
+        whatsapp: data.whatsapp,
+        profession: data.profession,
+        timestamp: new Date().toISOString()
+      }));
       
-      // Auto-reset após 5 segundos
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 5000);
+      // Small delay for UX
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Open Hotmart checkout widget with pre-filled data
+      openHotmartCheckout(data);
+      
+      setIsSubmitted(true);
+      
     } catch (error) {
-      console.error('Erro ao enviar:', error);
+      console.error('Erro ao processar:', error);
     } finally {
       setIsLoading(false);
     }
@@ -229,7 +337,7 @@ const LeadForm = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
           >
-            Inscrição realizada com sucesso! Você receberá em breve todas as informações no seu e-mail e WhatsApp.
+            ✓ Checkout aberto! Complete o pagamento na janela do Hotmart. Após a confirmação, você receberá um e-mail com todos os detalhes.
           </SuccessMessage>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)}>

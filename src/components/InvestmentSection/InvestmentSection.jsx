@@ -226,7 +226,7 @@ const InvestmentSection = () => {
         >
           <Price>
             <Currency>R$</Currency>
-            100
+            150
             <Cents>,00</Cents>
           </Price>
         </PriceWrapper>
